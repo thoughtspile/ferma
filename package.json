@@ -1,11 +1,11 @@
 {
-  "name": "leform",
+  "name": "formaster",
   "version": "0.0.1",
   "description": "HTML forms with less pain",
   "bugs": {
-    "url": "https://github.com/thoughtspile/leform/issues"
+    "url": "https://github.com/thoughtspile/formaster/issues"
   },
-  "homepage": "https://github.com/thoughtspile/leform#readme",
+  "homepage": "https://github.com/thoughtspile/formaster#readme",
   "keywords": [
     "form",
     "validation"
@@ -14,7 +14,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thoughtspile/leform.git"
+    "url": "git+https://github.com/thoughtspile/formaster.git"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
