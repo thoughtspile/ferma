@@ -1,0 +1,29 @@
+{
+  "name": "leform",
+  "version": "0.0.1",
+  "description": "HTML forms with less pain",
+  "bugs": {
+    "url": "https://github.com/thoughtspile/leform/issues"
+  },
+  "homepage": "https://github.com/thoughtspile/leform#readme",
+  "keywords": [
+    "form",
+    "validation"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thoughtspile/leform.git"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "npx vitest"
+  },
+  "author": "Vladimir Klepov v.klepov@gmail.com",
+  "license": "MIT"
+}
