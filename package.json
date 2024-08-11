@@ -1,6 +1,6 @@
 {
   "name": "leform",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "HTML forms with less pain",
   "bugs": {
     "url": "https://github.com/thoughtspile/leform/issues"
