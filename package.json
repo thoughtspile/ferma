@@ -22,8 +22,15 @@
     ".": "./dist/index.js"
   },
   "scripts": {
-    "test": "npx vitest"
+    "test": "npx vitest",
+    "dev": "npx vite dev",
+    "build": "tsc"
   },
   "author": "Vladimir Klepov v.klepov@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.5"
+  }
 }
