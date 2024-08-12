@@ -5,12 +5,16 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Leform dev</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <script type="module" src='./src/index.ts'></script>
+    <script type="module" src='./src/sample.ts'></script>
 </head>
 <body>
-    <form id="sample">
+    <form id="payment">
         <input required name="username">
+        <div data-leform-error="username"></div>
+        <input required type="number" min="0" name="amount">
+        <div data-leform-error="amount"></div>
         <input type="tel" name="receiver">
+        <div data-leform-error="receiver"></div>
         <button>submit</button>
     </form>
 </body>
