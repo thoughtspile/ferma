@@ -24,11 +24,15 @@
   "scripts": {
     "test": "npx vitest",
     "dev": "npx vite dev",
-    "build": "tsc"
+    "build": "tsc",
+    "terser": "npx terser dist/index.js -m -c --toplevel > dist/index.min.js",
+    "size:gz": "cat dist/index.min.js | gzip -c | wc -c",
+    "size": "npm run terser && npm run size:gz"
   },
   "author": "Vladimir Klepov v.klepov@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "terser": "^5.31.5",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
     "vitest": "^2.0.5"

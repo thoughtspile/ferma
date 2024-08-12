@@ -3,7 +3,7 @@
 		"module": "es2020",
 		"lib": ["ES6", "DOM"],
 		"moduleResolution": "node",
-		"target": "ES5",
+		"target": "ES2020",
 		"isolatedModules": true,
 		"forceConsistentCasingInFileNames": true,
 		"strictNullChecks": true,
