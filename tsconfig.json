@@ -1,7 +1,8 @@
 {
 	"compilerOptions": {
 		"module": "es2020",
-		"lib": ["ES6", "DOM"],
+		"lib": ["ES2020", "DOM", "dom.iterable"],
+		"skipLibCheck": true,
 		"moduleResolution": "node",
 		"target": "ES2020",
 		"isolatedModules": true,

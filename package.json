@@ -25,13 +25,15 @@
     "test": "npx vitest",
     "dev": "npx vite dev",
     "build": "tsc",
-    "terser": "npx terser dist/index.js -m -c --toplevel > dist/index.min.js",
-    "size:gz": "cat dist/index.min.js | gzip -c | wc -c",
+    "terser": "npx terser dist/formObject.js -m -c --toplevel > dist/formObject.min.js",
+    "size:gz": "cat dist/formObject.min.js | gzip -c | wc -c",
     "size": "npm run terser && npm run size:gz"
   },
   "author": "Vladimir Klepov v.klepov@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^22.3.0",
+    "jsdom": "^24.1.1",
     "terser": "^5.31.5",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",

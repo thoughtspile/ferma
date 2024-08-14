@@ -1,4 +1,6 @@
-import { leform, MultiValidationError, ValidationError } from "./index";
+import { formObject, leform, MultiValidationError, ValidationError } from "./index";
+
+const form = document.querySelector('form#payment') as HTMLFormElement;
 
 const paymentForm = leform({
     receiver: (v) => {
@@ -8,6 +10,7 @@ const paymentForm = leform({
     }
 }, {
     sumbit: () => {
+        console.log(formObject(form));
         return new Promise((_, fail) => {
             setTimeout(() => {
                 fail(new MultiValidationError([{ name: 'receiver', message: 'account blocked' }]));
@@ -16,4 +19,4 @@ const paymentForm = leform({
     }
 });
 
-paymentForm.attach(document.querySelector('form#payment')!);
+paymentForm.attach(form);

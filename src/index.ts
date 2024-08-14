@@ -51,9 +51,7 @@ export function leform(validations: Validations, ops: Options) {
         validateForm(form);
         form.reportValidity();
         e.preventDefault();
-        try {
-            await ops.sumbit(form);
-        } catch (err) {
+        ops.sumbit(form).catch((err) => {
             if (err instanceof MultiValidationError) {
                 err.items.forEach(({ name, message }) => {
                     serverErrors[name] = message;
@@ -61,7 +59,7 @@ export function leform(validations: Validations, ops: Options) {
                 });
                 form.reportValidity();
             }
-        }
+        });
     }
     function handleInvalid(e: Event) {
         const form = (e.target as HTMLInputElement)?.form!;
@@ -86,3 +84,5 @@ export function leform(validations: Validations, ops: Options) {
         }
     }
 }
+
+export { formObject } from './formObject';

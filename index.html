@@ -15,6 +15,27 @@
         <div data-leform-error="amount"></div>
         <input type="tel" name="receiver">
         <div data-leform-error="receiver"></div>
+
+        <label>
+            <input type="checkbox" name="agree" value="fee" />
+            Agree to fee
+        </label>
+        <label>
+            <input type="checkbox" name="agree" value="conditions" />
+            Agree to conditions
+        </label>
+        <div data-leform-error="agree"></div>
+
+        <label>
+            <input type="radio" name="receiverType" value="physical" />
+            Receiver is physical
+        </label>
+        <label>
+            <input type="radio" name="receiverType" value="legal" />
+            Receiver is legal
+        </label>
+        <div data-leform-error="receiverType"></div>
+
         <button>submit</button>
     </form>
 </body>
