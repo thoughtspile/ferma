@@ -32,7 +32,10 @@
   "author": "Vladimir Klepov v.klepov@gmail.com",
   "license": "MIT",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^22.3.0",
+    "@vitest/coverage-v8": "^2.0.5",
     "jsdom": "^24.1.1",
     "terser": "^5.31.5",
     "typescript": "^5.5.4",

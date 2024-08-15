@@ -35,6 +35,13 @@ describe('plain controls', () => {
         expect(formObject(form)).toEqual({ num: 2 });
     });
 
+    it('serializes invalid number to undefined', () => {
+        const form = createForm(`
+            <input name="num" type="number" value="">
+        `)
+        expect(formObject(form)).toEqual({});
+    })
+
     it('serializes select', () => {
         const form = createForm(`
             <select name="options">
