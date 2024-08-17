@@ -1,22 +1,22 @@
-import { formObject, leform, MultiValidationError, ValidationError } from "./index";
+import { formObject, customValidations, domErrorMessages, invalid, asyncValidations } from "./index";
+import { submitController } from "./submitController";
 
 const form = document.querySelector('form#payment') as HTMLFormElement;
 
-const paymentForm = leform({
+const errors = asyncValidations<'receiver'>(form);
+customValidations(form, {
     receiver: (v) => {
-        if (!v.startsWith('40817')) {
-            throw new ValidationError('Account number must start with 40817');
-        }
-    }
-}, {
-    sumbit: () => {
-        console.log(formObject(form));
-        return new Promise((_, fail) => {
-            setTimeout(() => {
-                fail(new MultiValidationError([{ name: 'receiver', message: 'account blocked' }]));
-            }, 1000);
-        });
+        if (!v.startsWith('40817')) invalid('Account number must start with 40817');
     }
 });
+domErrorMessages(form);
+submitController(form, () => {
+    console.log(formObject(form));
+    return new Promise((_, fail) => {
+        setTimeout(() => {
+            errors.setErrors({ receiver: 'account blocked' });
+            fail();
+        }, 1000);
+    });
+});
 
-paymentForm.attach(form);

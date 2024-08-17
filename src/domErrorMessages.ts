@@ -3,6 +3,14 @@ function getErrorContainer(input: HTMLInputElement) {
     return input.form?.querySelector(`[data-leform-error=${name}]`);
 }
 
+function getFirstInvalid(form: HTMLFormElement) {
+    for (let i = 0; i < form.elements.length; i++) {
+        if (!(form.elements[i] as HTMLInputElement).validity.valid) {
+            return form.elements[i];
+        }
+    }
+}
+
 function handleInvalid(e: Event) {
     const input = e.target as HTMLInputElement;
     const errorContainer = getErrorContainer(input);
@@ -10,10 +18,10 @@ function handleInvalid(e: Event) {
     
     e.preventDefault();
     errorContainer.innerHTML = input.validationMessage;
-    
-    const firstInvalid = input.form?.querySelector(':invalid') as HTMLInputElement;
-    firstInvalid.focus();
-    firstInvalid.scrollIntoView({ behavior: 'smooth' });
+    if (input === getFirstInvalid(input.form!)) {
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 export function domErrorMessages(form: HTMLFormElement): void {
