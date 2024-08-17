@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/vitest';
 import { asyncValidations } from "./asyncValidations";
 import { it, afterEach, expect } from 'vitest';
 import userEvent from '@testing-library/user-event';
+import { customValidations } from './customValidations';
 
 function createForm(html: string) {
     const form = document.createElement('form');
@@ -64,4 +65,15 @@ it('errors is cleared on input', async () => {
     h.setErrors({ foo: 'bad foo' });
     await userEvent.type(getControl('foo'), 'blah');
     expect(getControl('foo')).not.toBeInvalid();
-})
+});
+
+it.only('works with customValidations', () => {
+    const form = createForm(`
+        <input name="foo">
+    `);
+    customValidations(form, { foo: () => false });
+    const h = asyncValidations(form);
+    h.setErrors({ foo: 'bad foo' });
+    console.log('assert');
+    expect(getControl('foo').validationMessage).toBe('bad foo');
+});
