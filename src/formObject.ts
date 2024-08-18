@@ -1,13 +1,7 @@
+import { isPureRadio } from "./utils";
+
 type FormControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 type FormValue = File | string | number | boolean;
-
-function isPureRadio(controls: RadioNodeList) {
-    let isRadio = true;
-    controls.forEach(node => {
-        isRadio = isRadio && (node as HTMLInputElement).type === 'radio';
-    });
-    return isRadio;
-}
 
 export function getValue(control: Element | RadioNodeList, allData: FormDataEntryValue[]): FormValue | FormValue[] | undefined {
     const isMixed = control instanceof RadioNodeList && !isPureRadio(control);
@@ -33,7 +27,7 @@ export function getValue(control: Element | RadioNodeList, allData: FormDataEntr
     return allData[0];
 }
 
-export function formObject<T>(form: HTMLFormElement): T {
+export function formObject<T>(form: HTMLFormElement): Partial<T> {
     const res = {} as Record<string, any>;
     
     const data = new FormData(form);

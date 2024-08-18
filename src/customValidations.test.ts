@@ -1,7 +1,5 @@
-// @vitest-environment jsdom
-import '@testing-library/jest-dom/vitest';
 import { customValidations, invalid } from "./customValidations";
-import { vi, it, afterEach, expect, describe } from 'vitest';
+import { vi, it, expect, describe } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
 
 function createForm(html: string) {
@@ -15,10 +13,6 @@ function createForm(html: string) {
 
 const submit = () => userEvent.click(document.getElementById('submit')!);
 const getControl = (name: string) => document.getElementsByName(name)[0] as HTMLInputElement;
-
-afterEach(() => {
-    document.body.innerHTML = '';
-});
 
 describe('validation', () => {
     it('applies custom validation', async () => {

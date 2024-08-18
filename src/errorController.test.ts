@@ -1,7 +1,5 @@
-// @vitest-environment jsdom
-import '@testing-library/jest-dom/vitest';
 import { errorController } from "./errorController";
-import { it, afterEach, expect, describe } from 'vitest';
+import { it, expect, describe } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { customValidations } from './customValidations';
 
@@ -13,10 +11,6 @@ function createForm(html: string) {
 }
 
 const getControl = (name: string) => document.getElementsByName(name)[0] as HTMLInputElement;
-
-afterEach(() => {
-    document.body.innerHTML = '';
-});
 
 it('can set errors', () => {
     const form = createForm(`

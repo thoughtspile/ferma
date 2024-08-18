@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { formObject } from "./formObject";
 import { it, describe, afterEach, expect } from 'vitest';
 
@@ -7,10 +6,6 @@ function createForm(html: string): HTMLFormElement {
     form.innerHTML = html;
     return form;
 }
-
-afterEach(() => {
-    document.body.innerHTML = '';
-});
 
 describe('plain controls', () => {
     it('serializes input type=text', () => {

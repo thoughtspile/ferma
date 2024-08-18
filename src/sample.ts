@@ -1,4 +1,4 @@
-import { formObject, customValidations, domErrorMessages, invalid, errorController } from "./index";
+import { formObject, customValidations, domErrorMessages, invalid, errorController, setFormValue } from "./index";
 import { submitController } from "./submitController";
 
 const form = document.querySelector('form#payment') as HTMLFormElement;
@@ -19,4 +19,3 @@ submitController(form, () => {
         }, 1000);
     });
 });
-

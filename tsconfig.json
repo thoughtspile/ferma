@@ -12,6 +12,7 @@
 		"esModuleInterop": true,
 		"declaration": true,
 		"rootDirs": ["./src"],
+		"types": ["@testing-library/jest-dom/vitest"],
 		"outDir": "dist",
 	},
 	"include": ["src"]
