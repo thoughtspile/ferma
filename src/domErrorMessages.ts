@@ -1,6 +1,5 @@
 function getErrorContainer(input: HTMLInputElement) {
-    const name = input?.name;
-    return input.form?.querySelector(`[data-leform-error=${name}]`);
+    return input.form?.querySelector(`[data-leform-error=${input?.name}]`);
 }
 
 function getFirstInvalid(form: HTMLFormElement) {

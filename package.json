@@ -25,9 +25,7 @@
     "test": "npx vitest",
     "dev": "npx vite dev",
     "build": "tsc",
-    "terser": "npx terser dist/formObject.js -m -c --toplevel > dist/formObject.min.js",
-    "size:gz": "cat dist/formObject.min.js | gzip -c | wc -c",
-    "size": "npm run terser && npm run size:gz"
+    "size": "npx esbuild src/index.ts --bundle --minify | gzip -c | wc -c"
   },
   "author": "Vladimir Klepov v.klepov@gmail.com",
   "license": "MIT",

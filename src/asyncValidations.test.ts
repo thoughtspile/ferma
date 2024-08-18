@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
 import { asyncValidations } from "./asyncValidations";
-import { it, afterEach, expect } from 'vitest';
+import { it, afterEach, expect, describe } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { customValidations } from './customValidations';
 
@@ -18,7 +18,7 @@ afterEach(() => {
     document.body.innerHTML = '';
 });
 
-it('can set validations', () => {
+it('can set errors', () => {
     const form = createForm(`
         <input name="foo">
         <input name="bar">
@@ -36,44 +36,69 @@ it('can set validations', () => {
     expect(getControl('baz')).not.toBeInvalid();
 });
 
-it('can clear validations', () => {
-    const form = createForm(`
-        <input name="foo">
-        <input name="bar">
-    `);
-    const h = asyncValidations(form);
-    h.setErrors({ foo: 'bad foo', bar: 'bad bar' });
-    h.setErrors({ foo: 'bad foo', bar: false });
-    expect(getControl('foo')).toBeInvalid();
-    expect(getControl('foo').validationMessage).toBe('bad foo');
-    expect(getControl('bar')).not.toBeInvalid();
-});
-
 it('ignores non-existent fields', () => {
     const form = createForm(`
         <input name="foo">
     `);
     const h = asyncValidations(form);
     expect(() => h.setErrors({ blah: 'blah' })).not.toThrow();
-})
-
-it('errors is cleared on input', async () => {
-    const form = createForm(`
-        <input name="foo">
-    `);
-    const h = asyncValidations(form);
-    h.setErrors({ foo: 'bad foo' });
-    await userEvent.type(getControl('foo'), 'blah');
-    expect(getControl('foo')).not.toBeInvalid();
 });
 
-it.only('works with customValidations', () => {
+it('works with customValidations', () => {
     const form = createForm(`
         <input name="foo">
     `);
     customValidations(form, { foo: () => false });
     const h = asyncValidations(form);
     h.setErrors({ foo: 'bad foo' });
-    console.log('assert');
     expect(getControl('foo').validationMessage).toBe('bad foo');
+});
+
+describe('can clear error', () => {
+    it('via API', () => {
+        const form = createForm(`
+            <input name="foo">
+            <input name="bar">
+        `);
+        const h = asyncValidations(form);
+        h.setErrors({ foo: 'bad foo', bar: 'bad bar' });
+        h.setErrors({ foo: 'bad foo', bar: false });
+        expect(getControl('foo').validationMessage).toBe('bad foo');
+        expect(getControl('bar')).not.toBeInvalid();
+    });
+
+    it('on input', async () => {
+        const form = createForm(`
+            <input name="foo">
+            <input name="bar">
+        `);
+        const h = asyncValidations(form);
+        h.setErrors({ foo: 'bad foo', bar: 'bad bar' });
+        await userEvent.type(getControl('bar'), 'blah');
+        expect(getControl('foo').validationMessage).toBe('bad foo');
+        expect(getControl('bar')).not.toBeInvalid();
+    });
+    
+    it('on checkbox', async () => {
+        const form = createForm(`
+            <input type="checkbox" name="foo">
+        `);
+        const h = asyncValidations(form);
+        h.setErrors({ foo: 'bad foo' });
+        await userEvent.click(getControl('foo'));
+        expect(getControl('foo')).not.toBeInvalid();
+    });
+
+    it('on multi-element control', async () => {
+        const form = createForm(`
+            <input id="beer" type="checkbox" value="beer" name="drink">
+            <input id="wine" type="checkbox" value="wine" name="drink">
+        `);
+        const h = asyncValidations(form);
+        h.setErrors({ drink: 'pick drink' });
+        await userEvent.click(document.getElementById('wine')!);
+        const drinks = document.getElementsByName('drink');
+        expect(drinks[0]).not.toBeInvalid();
+        expect(drinks[1]).not.toBeInvalid();
+    });
 });

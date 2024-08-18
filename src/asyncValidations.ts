@@ -1,23 +1,28 @@
 type Maybe<T> = T | false | null | undefined;
+interface SetErrorOptions {
+    noReport?: boolean;
+}
 
 function getNamedControl(form: HTMLFormElement, name: string): HTMLInputElement | undefined {
     const control = form.elements[name];
     return control instanceof RadioNodeList ? control[0] : control;
 }
 
-function clearErrorOnInput(e: InputEvent & { target: HTMLInputElement }) {
-    e.target.setCustomValidity('');
-    e.target.removeEventListener('input', clearErrorOnInput);
-}
-
 export function asyncValidations<FormKeys extends string = string>(form: HTMLFormElement) {
-    function setErrors(errors: Record<FormKeys, Maybe<string>>) {
+    function setErrors(errors: Record<FormKeys, Maybe<string>>, ops: SetErrorOptions = {}) {
         for (const name in errors) {
             const el = getNamedControl(form, name);
-            el?.setCustomValidity(errors[name] || '');
-            el?.addEventListener('input', clearErrorOnInput);
+            if (!el) continue;
+            
+            el.setCustomValidity(errors[name] || '');
+            function clearErrorOnInput(e: InputEvent & { target: HTMLInputElement }) {
+                if (e.target.name !== name) return;
+                el?.setCustomValidity('');
+                form.removeEventListener('input', clearErrorOnInput);
+            }
+            form.addEventListener('input', clearErrorOnInput);
         }
-        form.reportValidity();
+        !ops.noReport && form.reportValidity();
     }
     return { setErrors };
 }
