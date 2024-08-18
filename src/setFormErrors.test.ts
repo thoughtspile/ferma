@@ -1,4 +1,4 @@
-import { errorController } from "./errorController";
+import { setFormErrors } from "./setFormErrors";
 import { it, expect, describe } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { customValidations } from './customValidations';
@@ -18,8 +18,7 @@ it('can set errors', () => {
         <input name="bar">
         <input name="baz">
     `);
-    const h = errorController(form);
-    h.setErrors({
+    setFormErrors(form, {
         foo: 'bad foo',
         bar: 'bad bar'
     });
@@ -34,8 +33,7 @@ it('ignores non-existent fields', () => {
     const form = createForm(`
         <input name="foo">
     `);
-    const h = errorController(form);
-    expect(() => h.setErrors({ blah: 'blah' })).not.toThrow();
+    expect(() => setFormErrors(form, { blah: 'blah' })).not.toThrow();
 });
 
 it('works with customValidations', () => {
@@ -43,8 +41,7 @@ it('works with customValidations', () => {
         <input name="foo">
     `);
     customValidations(form, { foo: () => false });
-    const h = errorController(form);
-    h.setErrors({ foo: 'bad foo' });
+    setFormErrors(form, { foo: 'bad foo' });
     expect(getControl('foo').validationMessage).toBe('bad foo');
 });
 
@@ -54,9 +51,8 @@ describe('can clear error', () => {
             <input name="foo">
             <input name="bar">
         `);
-        const h = errorController(form);
-        h.setErrors({ foo: 'bad foo', bar: 'bad bar' });
-        h.setErrors({ foo: 'bad foo', bar: false });
+        setFormErrors(form, { foo: 'bad foo', bar: 'bad bar' });
+        setFormErrors(form, { foo: 'bad foo', bar: false });
         expect(getControl('foo').validationMessage).toBe('bad foo');
         expect(getControl('bar')).not.toBeInvalid();
     });
@@ -66,8 +62,7 @@ describe('can clear error', () => {
             <input name="foo">
             <input name="bar">
         `);
-        const h = errorController(form);
-        h.setErrors({ foo: 'bad foo', bar: 'bad bar' });
+        setFormErrors(form, { foo: 'bad foo', bar: 'bad bar' });
         await userEvent.type(getControl('bar'), 'blah');
         expect(getControl('foo').validationMessage).toBe('bad foo');
         expect(getControl('bar')).not.toBeInvalid();
@@ -77,8 +72,7 @@ describe('can clear error', () => {
         const form = createForm(`
             <input type="checkbox" name="foo">
         `);
-        const h = errorController(form);
-        h.setErrors({ foo: 'bad foo' });
+        setFormErrors(form, { foo: 'bad foo' });
         await userEvent.click(getControl('foo'));
         expect(getControl('foo')).not.toBeInvalid();
     });
@@ -88,8 +82,7 @@ describe('can clear error', () => {
             <input id="beer" type="checkbox" value="beer" name="drink">
             <input id="wine" type="checkbox" value="wine" name="drink">
         `);
-        const h = errorController(form);
-        h.setErrors({ drink: 'pick drink' });
+        setFormErrors(form, { drink: 'pick drink' });
         await userEvent.click(document.getElementById('wine')!);
         const drinks = document.getElementsByName('drink');
         expect(drinks[0]).not.toBeInvalid();

@@ -1,4 +1,4 @@
-import { errorController } from './errorController';
+import { setFormErrors } from './setFormErrors';
 import { customValidations } from './customValidations';
 import { domErrorMessages } from './domErrorMessages';
 import { formObject } from './formObject';

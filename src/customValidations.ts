@@ -1,5 +1,5 @@
-import { errorController } from './errorController';
 import { getValue } from './formObject';
+import { setFormErrors } from './setFormErrors';
 
 export function invalid(message: string) {
     throw new Error(message);
@@ -10,8 +10,6 @@ type FieldValidator = (value: any) => void;
 type Validations = Record<string, FieldValidator>;
 
 export function customValidations(form: HTMLFormElement, validations: Validations): void {
-    const controller = errorController(form);
-
     function validateField(name: string): void {
         const validation = validations[name];
         if (!validation) return;
@@ -19,10 +17,10 @@ export function customValidations(form: HTMLFormElement, validations: Validation
         try {
             validation(value);
         } catch (err) {
-            controller.setErrors({ [name]: err.message }, { noReport: true });
+            setFormErrors(form, { [name]: err.message }, { noReport: true });
         }
     }
-    
+
     function validateForm() {
         for (const name in validations) {
             validateField(name);
