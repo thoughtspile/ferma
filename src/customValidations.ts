@@ -1,4 +1,4 @@
-import { getValue } from './formObject';
+import { getFieldValue } from './getFormValue';
 import { setFormErrors } from './setFormErrors';
 
 export function invalid(message: string) {
@@ -13,7 +13,7 @@ export function customValidations(form: HTMLFormElement, validations: Validation
     function validateField(name: string): void {
         const validation = validations[name];
         if (!validation) return;
-        const value = getValue(form.elements[name], new FormData(form).getAll(name));
+        const value = getFieldValue(form.elements[name], new FormData(form).getAll(name));
         try {
             validation(value);
         } catch (err) {

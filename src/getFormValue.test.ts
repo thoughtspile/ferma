@@ -1,4 +1,4 @@
-import { formObject } from "./formObject";
+import { getFormValue } from "./getFormValue";
 import { it, describe, afterEach, expect } from 'vitest';
 
 function createForm(html: string): HTMLFormElement {
@@ -13,28 +13,28 @@ describe('plain controls', () => {
             <input name="one" value="one">
             <input name="two" value="two">
         `)
-        expect(formObject(form)).toEqual({ one: 'one', two: 'two' });
+        expect(getFormValue(form)).toEqual({ one: 'one', two: 'two' });
     });
     
     it('serializes textarea', () => {
         const form = createForm(`
             <textarea name="text">long text</textarea>
         `)
-        expect(formObject(form)).toEqual({ text: 'long text' });
+        expect(getFormValue(form)).toEqual({ text: 'long text' });
     });
     
     it('serializes input type=number', () => {
         const form = createForm(`
             <input name="num" type="number" value="2">
         `)
-        expect(formObject(form)).toEqual({ num: 2 });
+        expect(getFormValue(form)).toEqual({ num: 2 });
     });
 
     it('serializes invalid number to undefined', () => {
         const form = createForm(`
             <input name="num" type="number" value="">
         `)
-        expect(formObject(form)).toEqual({});
+        expect(getFormValue(form)).toEqual({});
     })
 
     it('serializes select', () => {
@@ -44,7 +44,7 @@ describe('plain controls', () => {
                 <option value="no"></option>
             </select>
         `)
-        expect(formObject(form)).toEqual({ options: 'yes' });
+        expect(getFormValue(form)).toEqual({ options: 'yes' });
     });
 });
 
@@ -57,7 +57,7 @@ describe.skip('multiple', () => {
                 <option value="two" checked></option>
             </select>
         `)
-        expect(formObject(form)).toEqual({ select: ['one', 'two'] });
+        expect(getFormValue(form)).toEqual({ select: ['one', 'two'] });
     });
 
     it('serializes select multiple with one value as array', () => {
@@ -67,7 +67,7 @@ describe.skip('multiple', () => {
                 <option value="two" checked></option>
             </select>
         `)
-        expect(formObject(form)).toEqual({ select: ['two'] });
+        expect(getFormValue(form)).toEqual({ select: ['two'] });
     });
     
     it('serializes empty select multiple as array', () => {
@@ -77,14 +77,14 @@ describe.skip('multiple', () => {
                 <option value="two"></option>
             </select>
         `)
-        expect(formObject(form)).toEqual({ select: [] });
+        expect(getFormValue(form)).toEqual({ select: [] });
     });
 
     it('serializes email multiple as array', () => {
         const form = createForm(`
             <input name="recipients" type="email" value="me@me,you@you">
         `)
-        expect(formObject(form)).toEqual({ recipients: ['me@me', 'you@you'] });
+        expect(getFormValue(form)).toEqual({ recipients: ['me@me', 'you@you'] });
     });
 });
 
@@ -95,7 +95,7 @@ describe('checkbox', () => {
             <input type="checkbox" name="checkbox" value="two" checked>
             <input type="checkbox" name="checkbox" value="three">
         `)
-        expect(formObject(form)).toEqual({ checkbox: ['one', 'two'] });
+        expect(getFormValue(form)).toEqual({ checkbox: ['one', 'two'] });
     });
 
     it('serializes checkbox groups with one checked node', () => {
@@ -104,7 +104,7 @@ describe('checkbox', () => {
             <input type="checkbox" name="checkbox" value="two">
             <input type="checkbox" name="checkbox" value="three">
         `)
-        expect(formObject(form)).toEqual({ checkbox: ['one'] });
+        expect(getFormValue(form)).toEqual({ checkbox: ['one'] });
     });
 
     it('ignores checkbox groups with no checked nodes', () => {
@@ -113,21 +113,21 @@ describe('checkbox', () => {
             <input type="checkbox" name="checkbox" value="two">
             <input type="checkbox" name="checkbox" value="three">
         `)
-        expect(formObject(form)).toEqual({});
+        expect(getFormValue(form)).toEqual({});
     });
     
     it('serializes one checkbox as boolean', () => {
         const form = createForm(`
             <input type="checkbox" name="checkme" checked>
         `)
-        expect(formObject(form)).toEqual({ checkme: true });
+        expect(getFormValue(form)).toEqual({ checkme: true });
     });
     
     it('serializes one checkbox with value as array', () => {
         const form = createForm(`
             <input type="checkbox" name="options" value="only" checked>
         `)
-        expect(formObject(form)).toEqual({ options: ['only'] });
+        expect(getFormValue(form)).toEqual({ options: ['only'] });
     });
 })
 
@@ -137,7 +137,7 @@ describe('groups', () => {
             <input name="one" value="one">
             <input name="one" value="two">
         `)
-        expect(formObject(form)).toEqual({ one: ['one', 'two'] });
+        expect(getFormValue(form)).toEqual({ one: ['one', 'two'] });
     });
     
     it('multiple number inputs as text', () => {
@@ -145,7 +145,7 @@ describe('groups', () => {
             <input name="mix" type="number" value="1">
             <input name="mix" type="number" value="2">
         `)
-        expect(formObject(form)).toEqual({ mix: ["1", "2"] });
+        expect(getFormValue(form)).toEqual({ mix: ["1", "2"] });
     });
 
     describe('radio group', () => {
@@ -155,7 +155,7 @@ describe('groups', () => {
                 <input type="radio" name="radio" value="two">
                 <input type="radio" name="radio" value="three">
             `)
-            expect(formObject(form)).toEqual({ radio: 'one' });
+            expect(getFormValue(form)).toEqual({ radio: 'one' });
         });
 
         it('serializes mixed radio + plain to array', () => {
@@ -165,7 +165,7 @@ describe('groups', () => {
                 <input type="radio" name="mixed" value="three">
                 <input name="mixed" value="extra">
             `)
-            expect(formObject(form)).toEqual({ mixed: ['one', 'extra'] });
+            expect(getFormValue(form)).toEqual({ mixed: ['one', 'extra'] });
         });
     });
 });

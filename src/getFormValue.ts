@@ -3,7 +3,7 @@ import { isPureRadio } from "./utils";
 type FormControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 type FormValue = File | string | number | boolean;
 
-export function getValue(control: Element | RadioNodeList, allData: FormDataEntryValue[]): FormValue | FormValue[] | undefined {
+export function getFieldValue(control: Element | RadioNodeList, allData: FormDataEntryValue[]): FormValue | FormValue[] | undefined {
     const isMixed = control instanceof RadioNodeList && !isPureRadio(control);
     const isMultiple = (control as HTMLSelectElement).multiple;
     if (isMixed || isMultiple) return allData;
@@ -27,12 +27,12 @@ export function getValue(control: Element | RadioNodeList, allData: FormDataEntr
     return allData[0];
 }
 
-export function formObject<T>(form: HTMLFormElement): Partial<T> {
+export function getFormValue<T>(form: HTMLFormElement): Partial<T> {
     const res = {} as Record<string, any>;
     
     const data = new FormData(form);
     new Set(data.keys()).forEach((key) => {
-        res[key] = getValue(form.elements[key]!, data.getAll(key));
+        res[key] = getFieldValue(form.elements[key]!, data.getAll(key));
     });
 
     return res as T;

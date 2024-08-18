@@ -1,4 +1,4 @@
-import { formObject, customValidations, domErrorMessages, invalid, setFormErrors, submitController } from "./src";
+import { getFormValue, customValidations, domErrorMessages, invalid, setFormErrors, submitController } from "./src";
 
 const form = document.querySelector('form#payment') as HTMLFormElement;
 
@@ -9,7 +9,7 @@ customValidations(form, {
 });
 domErrorMessages(form);
 submitController(form, () => {
-    console.log(formObject(form));
+    console.log(getFormValue(form));
     return new Promise((_, fail) => {
         setTimeout(() => {
             setFormErrors(form, { receiver: 'account blocked' });
