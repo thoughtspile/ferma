@@ -1,5 +1,4 @@
-import { formObject, customValidations, domErrorMessages, invalid, setFormErrors } from "./index";
-import { submitController } from "./submitController";
+import { formObject, customValidations, domErrorMessages, invalid, setFormErrors, submitController } from "./src";
 
 const form = document.querySelector('form#payment') as HTMLFormElement;
 

@@ -3,9 +3,9 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Leform dev</title>
+    <title>Ferma dev</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <script type="module" src='./src/sample.ts'></script>
+    <script type="module" src='./sample.ts'></script>
     <style>
         :invalid {
             border-color: red;
@@ -15,11 +15,11 @@
 <body>
     <form id="payment">
         <input required name="username">
-        <div data-leform-error="username"></div>
+        <div data-ferma-error="username"></div>
         <input required type="number" min="0" name="amount">
-        <div data-leform-error="amount"></div>
+        <div data-ferma-error="amount"></div>
         <input autocomplete="off" type="tel" name="receiver">
-        <div data-leform-error="receiver"></div>
+        <div data-ferma-error="receiver"></div>
 
         <label>
             <input type="checkbox" name="agree" value="fee" />
@@ -29,7 +29,7 @@
             <input type="checkbox" name="agree" value="conditions" />
             Agree to conditions
         </label>
-        <div data-leform-error="agree"></div>
+        <div data-ferma-error="agree"></div>
 
         <label>
             <input type="radio" name="receiverType" value="physical" />
@@ -39,7 +39,7 @@
             <input type="radio" name="receiverType" value="legal" />
             Receiver is legal
         </label>
-        <div data-leform-error="receiverType"></div>
+        <div data-ferma-error="receiverType"></div>
 
         <button>submit</button>
     </form>
