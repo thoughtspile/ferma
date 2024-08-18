@@ -20,17 +20,47 @@ afterEach(() => {
     document.body.innerHTML = '';
 });
 
-it('applies custom validation', async () => {
-    const { form, onSumbit } = createForm(`
-        <input name="foo">
-    `);
-    customValidations(form, {
-        foo: () => invalid('bad foo'),
+describe('validation', () => {
+    it('applies custom validation', async () => {
+        const { form, onSumbit } = createForm(`
+            <input name="foo" value="blah">
+        `);
+        const validateFoo = vi.fn(() => invalid('bad foo'));
+        customValidations(form, { foo: validateFoo });
+        await submit();
+        expect(validateFoo).toBeCalledWith('blah');
+        expect(onSumbit).not.toBeCalled();
+        expect(getControl('foo')).toBeInvalid();
+        expect(getControl('foo').validationMessage).toBe('bad foo');
     });
-    await submit();
-    expect(onSumbit).not.toBeCalled();
-    expect(getControl('foo')).toBeInvalid();
-    expect(getControl('foo').validationMessage).toBe('bad foo');
+
+    it('validates radio group', async () => {
+        const { form, onSumbit } = createForm(`
+            <input type="radio" name="drink" value="beer" checked>
+            <input type="radio" name="drink" value="wine">
+        `);
+        const validateDrink = vi.fn(() => invalid('bad drink'))
+        customValidations(form, { drink: validateDrink });
+        await submit();
+        expect(validateDrink).toBeCalledWith('beer');
+        expect(onSumbit).not.toBeCalled();
+        expect(getControl('drink')).toBeInvalid();
+        expect(getControl('drink').validationMessage).toBe('bad drink');
+    });
+
+    it('validates checkbox group', async () => {
+        const { form, onSumbit } = createForm(`
+            <input type="checkbox" name="drink" value="beer" checked>
+            <input type="checkbox" name="drink" value="wine" checked>
+        `);
+        const validateDrink = vi.fn(() => invalid('bad drink'))
+        customValidations(form, { drink: validateDrink });
+        await submit();
+        expect(validateDrink).toBeCalledWith(['beer', 'wine']);
+        expect(onSumbit).not.toBeCalled();
+        expect(getControl('drink')).toBeInvalid();
+        expect(getControl('drink').validationMessage).toBe('bad drink');
+    });
 });
 
 it('does not prevent submit if all valid', async () => {
@@ -43,7 +73,7 @@ it('does not prevent submit if all valid', async () => {
     await submit();
     expect(getControl('foo')).not.toBeInvalid();
     expect(onSumbit).toBeCalled();
-})
+});
 
 describe('interaction with native validation', () => {
     it('native validation works', async () => {
@@ -104,6 +134,8 @@ describe('live validation', () => {
             foo: value => value === 'bad' ? invalid('bad foo') : null,
         });
         await userEvent.type(getControl('foo'), 'bad');
+        // blur
+        await userEvent.click(document.body);
         expect(getControl('foo')).toBeInvalid();
         expect(getControl('foo').validationMessage).toBe('bad foo');
     });
@@ -118,6 +150,5 @@ describe('live validation', () => {
         await submit();
         await userEvent.type(getControl('foo'), 'bar');
         expect(getControl('foo')).not.toBeInvalid();
-
     });
 });

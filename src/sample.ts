@@ -1,9 +1,9 @@
-import { formObject, customValidations, domErrorMessages, invalid, asyncValidations } from "./index";
+import { formObject, customValidations, domErrorMessages, invalid, errorController } from "./index";
 import { submitController } from "./submitController";
 
 const form = document.querySelector('form#payment') as HTMLFormElement;
 
-const errors = asyncValidations<'receiver'>(form);
+const errors = errorController<'receiver'>(form);
 customValidations(form, {
     receiver: (v) => {
         if (!v.startsWith('40817')) invalid('Account number must start with 40817');

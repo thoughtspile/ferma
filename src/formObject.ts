@@ -9,7 +9,7 @@ function isPureRadio(controls: RadioNodeList) {
     return isRadio;
 }
 
-function getValue(control: Element | RadioNodeList, allData: FormDataEntryValue[]): FormValue | FormValue[] | undefined {
+export function getValue(control: Element | RadioNodeList, allData: FormDataEntryValue[]): FormValue | FormValue[] | undefined {
     const isMixed = control instanceof RadioNodeList && !isPureRadio(control);
     const isMultiple = (control as HTMLSelectElement).multiple;
     if (isMixed || isMultiple) return allData;

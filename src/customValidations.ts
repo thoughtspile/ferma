@@ -1,45 +1,52 @@
+import { errorController } from './errorController';
+import { getValue } from './formObject';
+
 export function invalid(message: string) {
     throw new Error(message);
 }
 
-type FieldValidator = (value: string) => void;
+type ControlEvent = Event & { target: HTMLInputElement };
+type FieldValidator = (value: any) => void;
 type Validations = Record<string, FieldValidator>;
 
 export function customValidations(form: HTMLFormElement, validations: Validations): void {
-    function validateField(el: HTMLInputElement): void {
-        const validation = validations[el.name];
+    const controller = errorController(form);
+
+    function validateField(name: string): void {
+        const validation = validations[name];
+        if (!validation) return;
+        const value = getValue(form.elements[name], new FormData(form).getAll(name));
         try {
-            validation && validation(el.value);
-            el.setCustomValidity('');
+            validation(value);
         } catch (err) {
-            el.setCustomValidity(err.message);
+            controller.setErrors({ [name]: err.message }, { noReport: true });
         }
     }
-    function validateForm(form: HTMLFormElement) {
+    
+    function validateForm() {
         for (const name in validations) {
-            validateField(form.elements[name] as HTMLInputElement);
+            validateField(name);
         }
     }
 
     function handleSubmit(e: SubmitEvent) {
         const form = e.target as HTMLFormElement;
-        validateForm(form);
+        validateForm();
         const isValid = form.reportValidity();
         if (isValid) return;
         e.stopPropagation();
         e.preventDefault();
     }
 
-    function handleInvalid(e: Event) {
-        const form = (e.target as HTMLInputElement)?.form!;
-        validateForm(form);
+    function handleInvalid() {
+        validateForm();
     }
 
-    function handleInput(e: Event) {
-        validateField(e.target as HTMLInputElement);
+    function handleChange(e: ControlEvent) {
+        validateField(e.target.name);
     }
 
     form.addEventListener('submit', handleSubmit, { capture: true });
-    form.addEventListener('input', handleInput);
     form.addEventListener('invalid', handleInvalid, { capture: true });
+    form.addEventListener('change', handleChange);
 }

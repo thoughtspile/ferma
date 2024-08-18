@@ -3,12 +3,7 @@ interface SetErrorOptions {
     noReport?: boolean;
 }
 
-function getNamedControl(form: HTMLFormElement, name: string): HTMLInputElement | undefined {
-    const control = form.elements[name];
-    return control instanceof RadioNodeList ? control[0] : control;
-}
-
-export function asyncValidations<FormKeys extends string = string>(form: HTMLFormElement) {
+export function errorController<FormKeys extends string = string>(form: HTMLFormElement) {
     function setErrors(errors: Record<FormKeys, Maybe<string>>, ops: SetErrorOptions = {}) {
         for (const name in errors) {
             const el = getNamedControl(form, name);
@@ -25,4 +20,9 @@ export function asyncValidations<FormKeys extends string = string>(form: HTMLFor
         !ops.noReport && form.reportValidity();
     }
     return { setErrors };
+}
+
+function getNamedControl(form: HTMLFormElement, name: string): HTMLInputElement {
+    const control = form.elements[name];
+    return control instanceof RadioNodeList ? control[0] : control;
 }

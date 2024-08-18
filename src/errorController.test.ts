@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
-import { asyncValidations } from "./asyncValidations";
+import { errorController } from "./errorController";
 import { it, afterEach, expect, describe } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { customValidations } from './customValidations';
@@ -24,7 +24,7 @@ it('can set errors', () => {
         <input name="bar">
         <input name="baz">
     `);
-    const h = asyncValidations(form);
+    const h = errorController(form);
     h.setErrors({
         foo: 'bad foo',
         bar: 'bad bar'
@@ -40,7 +40,7 @@ it('ignores non-existent fields', () => {
     const form = createForm(`
         <input name="foo">
     `);
-    const h = asyncValidations(form);
+    const h = errorController(form);
     expect(() => h.setErrors({ blah: 'blah' })).not.toThrow();
 });
 
@@ -49,7 +49,7 @@ it('works with customValidations', () => {
         <input name="foo">
     `);
     customValidations(form, { foo: () => false });
-    const h = asyncValidations(form);
+    const h = errorController(form);
     h.setErrors({ foo: 'bad foo' });
     expect(getControl('foo').validationMessage).toBe('bad foo');
 });
@@ -60,7 +60,7 @@ describe('can clear error', () => {
             <input name="foo">
             <input name="bar">
         `);
-        const h = asyncValidations(form);
+        const h = errorController(form);
         h.setErrors({ foo: 'bad foo', bar: 'bad bar' });
         h.setErrors({ foo: 'bad foo', bar: false });
         expect(getControl('foo').validationMessage).toBe('bad foo');
@@ -72,7 +72,7 @@ describe('can clear error', () => {
             <input name="foo">
             <input name="bar">
         `);
-        const h = asyncValidations(form);
+        const h = errorController(form);
         h.setErrors({ foo: 'bad foo', bar: 'bad bar' });
         await userEvent.type(getControl('bar'), 'blah');
         expect(getControl('foo').validationMessage).toBe('bad foo');
@@ -83,7 +83,7 @@ describe('can clear error', () => {
         const form = createForm(`
             <input type="checkbox" name="foo">
         `);
-        const h = asyncValidations(form);
+        const h = errorController(form);
         h.setErrors({ foo: 'bad foo' });
         await userEvent.click(getControl('foo'));
         expect(getControl('foo')).not.toBeInvalid();
@@ -94,7 +94,7 @@ describe('can clear error', () => {
             <input id="beer" type="checkbox" value="beer" name="drink">
             <input id="wine" type="checkbox" value="wine" name="drink">
         `);
-        const h = asyncValidations(form);
+        const h = errorController(form);
         h.setErrors({ drink: 'pick drink' });
         await userEvent.click(document.getElementById('wine')!);
         const drinks = document.getElementsByName('drink');
