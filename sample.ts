@@ -1,23 +1,31 @@
-import { getFormValue, customValidations, domErrorMessages, invalid, setFormErrors, submitController } from "./src";
+import { ferma, domErrorMessages, invalid } from "./src";
 
 type FormState = {
     receiver: string;
+    amount: number;
+    accept: string[];
+    receiverType: 'legal' | 'physical';
 };
 
-const form = document.querySelector('form#payment') as HTMLFormElement;
-
-customValidations<FormState>(form, {
-    receiver: (v) => {
-        if (!v || v.startsWith('40817')) invalid('Account number must start with 40817');
-    }
+const formEl = document.querySelector('form#payment') as HTMLFormElement;
+const form = ferma<FormState>(formEl, {
+    validate: {
+        receiver: (v) => {
+            if (!v || v.startsWith('40817')) invalid('Account number must start with 40817');
+        }
+    },
+    submit: () => {
+        console.log(form.getValue());
+        return new Promise((_, fail) => {
+            setTimeout(() => {
+                form.setErrors({ receiver: 'account blocked' });
+                fail();
+            }, 1000);
+        });
+    },
 });
-domErrorMessages(form);
-submitController(form, () => {
-    console.log(getFormValue(form));
-    return new Promise((_, fail) => {
-        setTimeout(() => {
-            setFormErrors(form, { receiver: 'account blocked' });
-            fail();
-        }, 1000);
-    });
+
+domErrorMessages(formEl);
+document.getElementById('randomize')?.addEventListener('click', () => {
+    form.setValue({ amount: Math.floor(Math.random() * 1000) });
 });
