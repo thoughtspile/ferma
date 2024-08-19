@@ -1,6 +1,7 @@
 import { ferma, domErrorMessages, invalid } from "./src";
 
 type FormState = {
+    username: string;
     receiver: string;
     amount: number;
     accept: string[];
@@ -11,7 +12,7 @@ const formEl = document.querySelector('form#payment') as HTMLFormElement;
 const form = ferma<FormState>(formEl, {
     validate: {
         receiver: (v) => {
-            if (!v || v.startsWith('40817')) invalid('Account number must start with 40817');
+            if (!v || !v.startsWith('40817')) invalid('Account number must start with 40817');
         }
     },
     submit: () => {
@@ -26,6 +27,7 @@ const form = ferma<FormState>(formEl, {
 });
 
 domErrorMessages(formEl);
+
 document.getElementById('randomize')?.addEventListener('click', () => {
     form.setValue({ amount: Math.floor(Math.random() * 1000) });
 });

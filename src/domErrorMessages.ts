@@ -30,8 +30,14 @@ function handleInvalid(e: FormControlEvent) {
     }
 }
 
+function onValidityChange(e: FormControlEvent) {
+    syncErrorMessage(e.target)
+}
+
 export function domErrorMessages(form: HTMLFormElement): void {
     form.addEventListener('invalid', handleInvalid, { capture: true });
-    form.addEventListener('input', (e: FormControlEvent) => syncErrorMessage(e.target));
-    form.addEventListener('change', (e: FormControlEvent) => syncErrorMessage(e.target));
+    // listen to ferma custom validations
+    form.addEventListener('ferma:validity', onValidityChange, { capture: true });
+    // listen native validations
+    form.addEventListener('input', onValidityChange);
 }

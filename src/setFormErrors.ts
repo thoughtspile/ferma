@@ -16,9 +16,11 @@ export function setFormErrors<FormShape extends Record<string, unknown>>(
         if (!el) continue;
         
         el.setCustomValidity(errors[name] || '');
+        el.dispatchEvent(new Event('ferma:validity'));
         function clearErrorOnInput(e: InputEvent & { target: HTMLInputElement }) {
             if (e.target.name !== name) return;
             el?.setCustomValidity('');
+            el?.dispatchEvent(new Event('ferma:validity'));
             form.removeEventListener('input', clearErrorOnInput);
         }
         form.addEventListener('input', clearErrorOnInput);
