@@ -13,7 +13,8 @@ const form = ferma<FormState>(formEl, {
     validate: {
         receiver: (v) => {
             if (!v || !v.startsWith('40817')) invalid('Account number must start with 40817');
-        }
+        },
+        agree: (v = []) => v.length === 0 ? invalid('Accept at least one option') : ''
     },
     submit: () => {
         console.log(form.getValue());
