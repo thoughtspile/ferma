@@ -4,7 +4,7 @@ type FormState = {
     username: string;
     receiver: string;
     amount: number;
-    accept: string[];
+    agree: string[];
     receiverType: 'legal' | 'physical';
 };
 
@@ -29,5 +29,11 @@ const form = ferma<FormState>(formEl, {
 domErrorMessages(formEl);
 
 document.getElementById('randomize')?.addEventListener('click', () => {
-    form.setValue({ amount: Math.floor(Math.random() * 1000) });
+    form.setValue({ 
+        username: Math.random() > 0.5 ? 'thoughtspile' : 'dido',
+        amount: Math.floor(Math.random() * 1000),
+        receiver: Math.random() > 0.5 ? '40817117' : '48992381',
+        agree: [Math.random() > 0.5 ? 'fee' : '', Math.random() > 0.5 ? 'conditions' : ''],
+        receiverType: Math.random() > 0.5 ? 'legal' : 'physical',
+    });
 });
