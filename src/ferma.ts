@@ -1,14 +1,24 @@
-import { setFormErrors } from './setFormErrors';
-import { customValidations } from './customValidations';
-import { domErrorMessages } from './domErrorMessages';
+import { setFormErrors, type ErrorDictionary } from './setFormErrors';
+import { customValidations, ValidationSchema } from './customValidations';
 import { getFormValue } from './getFormValue';
-import { submitController } from './submitController';
+import { submitController, type Submitter } from './submitController';
 import { setFormValue } from './setFormValue';
-import { FieldType } from './types';
+import { BaseFormState } from './types';
 
-export function ferma<T extends { [name: string]: FieldType }>(form: HTMLFormElement) {
+interface FermaOptions<FormShape extends BaseFormState> {
+    submit?: Submitter;
+    validate?: ValidationSchema<FormShape>;
+}
+
+export function ferma<FormShape extends BaseFormState>(
+    form: HTMLFormElement,
+    options: FermaOptions<FormShape> = {}
+) {
+    options.submit && submitController(form, options.submit);
+    options.validate && customValidations(form, options.validate);
     return {
-        getValue: () => getFormValue<T>(form),
-        setValue: (patch: Partial<T>) => setFormValue(form, patch),
-    }
+        getValue: () => getFormValue<FormShape>(form),
+        setValue: (patch: Partial<FormShape>) => setFormValue(form, patch),
+        setErrors: (errors: ErrorDictionary<FormShape>) => setFormErrors(form, errors),
+    };
 }

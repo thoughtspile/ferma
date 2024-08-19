@@ -4,3 +4,4 @@ export { getFormValue } from './getFormValue';
 export { submitController } from './submitController';
 export { setFormErrors } from './setFormErrors';
 export { setFormValue } from './setFormValue';
+export { ferma } from './ferma';

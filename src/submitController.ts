@@ -1,4 +1,6 @@
-export function submitController(form: HTMLFormElement, handler: (e: SubmitEvent) => Promise<void>) {
+export type Submitter = (e: SubmitEvent) => (void | Promise<void>);
+
+export function submitController(form: HTMLFormElement, handler: Submitter) {
     let isSubmitting = false;
     async function onSubmit(e: SubmitEvent) {
         e.preventDefault();

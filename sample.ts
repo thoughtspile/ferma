@@ -1,10 +1,14 @@
 import { getFormValue, customValidations, domErrorMessages, invalid, setFormErrors, submitController } from "./src";
 
+type FormState = {
+    receiver: string;
+};
+
 const form = document.querySelector('form#payment') as HTMLFormElement;
 
-customValidations(form, {
+customValidations<FormState>(form, {
     receiver: (v) => {
-        if (!v.startsWith('40817')) invalid('Account number must start with 40817');
+        if (!v || v.startsWith('40817')) invalid('Account number must start with 40817');
     }
 });
 domErrorMessages(form);
