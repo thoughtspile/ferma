@@ -35,9 +35,10 @@ function onValidityChange(e: FormControlEvent) {
 }
 
 export function domErrorMessages(form: HTMLFormElement): void {
+    // fallback validations on submit without interaction
     form.addEventListener('invalid', handleInvalid, { capture: true });
     // listen to ferma custom validations
     form.addEventListener('ferma:validity', onValidityChange, { capture: true });
-    // listen native validations
+    // listen live native validations
     form.addEventListener('input', onValidityChange);
 }
