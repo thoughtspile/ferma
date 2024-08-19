@@ -1,11 +1,11 @@
 {
-  "name": "formaster",
+  "name": "ferma",
   "version": "0.0.1",
   "description": "HTML forms with less pain",
   "bugs": {
-    "url": "https://github.com/thoughtspile/formaster/issues"
+    "url": "https://github.com/thoughtspile/ferma/issues"
   },
-  "homepage": "https://github.com/thoughtspile/formaster#readme",
+  "homepage": "https://github.com/thoughtspile/ferma#readme",
   "keywords": [
     "form",
     "validation"
@@ -14,7 +14,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thoughtspile/formaster.git"
+    "url": "git+https://github.com/thoughtspile/ferma.git"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

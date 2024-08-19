@@ -1,9 +1,7 @@
+import { FieldType } from "./types";
 import { isPureRadio } from "./utils";
 
-type FormControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-type FormValue = File | string | number | boolean;
-
-export function getFieldValue(control: Element | RadioNodeList, allData: FormDataEntryValue[]): FormValue | FormValue[] | undefined {
+export function getFieldValue(control: Element | RadioNodeList, allData: FormDataEntryValue[]): FieldType | undefined {
     const isMixed = control instanceof RadioNodeList && !isPureRadio(control);
     const isMultiple = (control as HTMLSelectElement).multiple;
     if (isMixed || isMultiple) return allData;
@@ -28,7 +26,7 @@ export function getFieldValue(control: Element | RadioNodeList, allData: FormDat
 }
 
 export function getFormValue<T>(form: HTMLFormElement): Partial<T> {
-    const res = {} as Record<string, any>;
+    const res = {} as Record<string, FieldType | undefined>;
     
     const data = new FormData(form);
     new Set(data.keys()).forEach((key) => {
