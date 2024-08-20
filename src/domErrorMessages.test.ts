@@ -26,6 +26,7 @@ describe('native validation', () => {
         `);
         domErrorMessages(form);
         await userEvent.type(getControl('foo'), '999');
+        await userEvent.click(document.body);
         expect(getError('foo')).not.toBeEmptyDOMElement();
     });
 

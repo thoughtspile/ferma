@@ -51,4 +51,5 @@ export function customValidations<FormState extends BaseFormState>(
     form.addEventListener('submit', handleSubmit, { capture: true });
     form.addEventListener('invalid', handleInvalid, { capture: true });
     form.addEventListener('change', handleChange);
+    form.addEventListener('ferma:change', handleChange, { capture: true });
 }

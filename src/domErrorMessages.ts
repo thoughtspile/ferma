@@ -1,7 +1,7 @@
 import { FormControl, FormControlEvent } from "./types";
 
 function getErrorContainer(input: FormControl) {
-    return input.form.querySelector(`[data-ferma-error=${input.name}]`);
+    return input.name ? input.form.querySelector(`[data-ferma-error=${input.name}]`) : null;
 }
 
 function getFirstInvalid(form: HTMLFormElement) {
@@ -40,5 +40,5 @@ export function domErrorMessages(form: HTMLFormElement): void {
     // listen to ferma custom validations
     form.addEventListener('ferma:validity', onValidityChange, { capture: true });
     // listen live native validations
-    form.addEventListener('input', onValidityChange);
+    form.addEventListener('blur', onValidityChange, { capture: true });
 }

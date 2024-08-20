@@ -1,6 +1,7 @@
 import { customValidations, invalid } from "./customValidations";
 import { vi, it, expect, describe } from 'vitest';
 import { userEvent } from '@testing-library/user-event';
+import { setFormValue } from "./setFormValue";
 
 function createForm(html: string) {
     const form = document.createElement('form');
@@ -143,6 +144,32 @@ describe('live validation', () => {
         });
         await submit();
         await userEvent.type(getControl('foo'), 'bar');
+        expect(getControl('foo')).not.toBeInvalid();
+    });
+});
+
+describe('setFormValue interaction', () => {
+    it.only('shows error on controlled change', () => {
+        const { form } = createForm(`
+            <input name="foo" value="">
+        `);
+        customValidations(form, {
+            foo: (v) => v === 'bad' && invalid('bad foo'),
+        });
+        setFormValue(form, { foo: 'bad' });
+        expect(getControl('foo')).toBeInvalid();
+        expect(getControl('foo').validationMessage).toBe('bad foo');
+    });
+    
+    it('fixes error on controlled change', async () => {
+        const { form } = createForm(`
+            <input name="foo" value="">
+        `);
+        customValidations(form, {
+            foo: (v) => v !== 'good' && invalid('bad foo'),
+        });
+        await submit();
+        setFormValue(form, { foo: 'good' });
         expect(getControl('foo')).not.toBeInvalid();
     });
 });
