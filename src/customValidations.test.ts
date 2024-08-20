@@ -149,7 +149,7 @@ describe('live validation', () => {
 });
 
 describe('setFormValue interaction', () => {
-    it.only('shows error on controlled change', () => {
+    it('shows error on controlled change', () => {
         const { form } = createForm(`
             <input name="foo" value="">
         `);

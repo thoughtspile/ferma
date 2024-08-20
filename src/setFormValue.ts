@@ -17,7 +17,6 @@ export function setFormValue(form: HTMLFormElement, value: object) {
         } else if (control) {
             control.value = Array.isArray(fieldValue) ? fieldValue.join(',') : fieldValue;
         }
-        console.log('dispatch set event');
         (control instanceof RadioNodeList ? control[0] : control)?.dispatchEvent(new Event('ferma:change'));
     }
 }

@@ -34,6 +34,10 @@ function onValidityChange(e: FormControlEvent) {
     syncErrorMessage(e.target)
 }
 
+function onInput(e: FormControlEvent) {
+    e.target.validity.valid && syncErrorMessage(e.target);
+}
+
 export function domErrorMessages(form: HTMLFormElement): void {
     // fallback validations on submit without interaction
     form.addEventListener('invalid', handleInvalid, { capture: true });
@@ -41,4 +45,6 @@ export function domErrorMessages(form: HTMLFormElement): void {
     form.addEventListener('ferma:validity', onValidityChange, { capture: true });
     // listen live native validations
     form.addEventListener('blur', onValidityChange, { capture: true });
+    // clear native validations immediately when fixed
+    form.addEventListener('input', onInput, { capture: true });
 }
