@@ -81,7 +81,7 @@ const transferForm = ferma(formElement, {
     },
     submit: async () => {
         // Get a neatly serialized form value:
-        console.log(transferForm.getValue());
+        alert(JSON.stringify(transferForm.getValue(), null, 2));
         // Asynchronously set field errors from API response
         transferForm.setErrors({
             account: 'account blocked'
@@ -95,6 +95,8 @@ fullAmountHint.addEventListener('click', () => {
 // Show validation errors in DOM containers
 domErrorMessages(formElement);
 ```
+
+[Try it out in the sandbox](https://codesandbox.io/p/sandbox/ferma-demo-pklc3y)
 
 ## License
 

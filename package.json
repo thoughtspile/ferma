@@ -18,13 +18,15 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "unpkg": "./dist/umd.js",
   "exports": {
     ".": "./dist/index.js"
   },
   "scripts": {
     "test": "npx vitest",
     "dev": "npx vite dev",
-    "build": "tsc",
+    "build": "tsc && npm run build:umd",
+    "build:umd": "npx esbuild src/umd.ts --bundle > dist/umd.js",
     "size": "npx esbuild src/index.ts --bundle --minify | gzip -c | wc -c"
   },
   "author": "Vladimir Klepov v.klepov@gmail.com",
