@@ -1,4 +1,4 @@
-# Ferma
+# Ferma: a 2 kB power-up for native HTML forms.
 
 > Beware: alpha-quality software.
 
@@ -16,7 +16,7 @@ Ferma is a vanilla JS library that gives us a low-tech way to work with forms:
 And with great perks:
 
 - No framework required.
-- Tiny: around __1 kB__ of JS, min + gzip.
+- Tiny: around __1–1.5 kB__ of JS, min + gzip. Modular, tree-shakable helpers available for every feature.
 - Write less code with native HTML validations.
 
 Limitations of the current version:
@@ -96,7 +96,7 @@ fullAmountHint.addEventListener('click', () => {
 domErrorMessages(formElement);
 ```
 
-[Try it out in the sandbox](https://codesandbox.io/p/sandbox/ferma-demo-pklc3y)
+[Try it out in the sandbox](https://jsfiddle.net/3n8wbgt6/7/)
 
 ## License
 
