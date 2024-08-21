@@ -1,5 +1,5 @@
 import { setFormErrors, type ErrorDictionary } from './setFormErrors';
-import { customValidations, ValidationSchema } from './customValidations';
+import { customValidations, invalid, ValidationSchema } from './customValidations';
 import { getFormValue } from './getFormValue';
 import { submitController, type Submitter } from './submitController';
 import { setFormValue } from './setFormValue';
@@ -22,3 +22,5 @@ export function ferma<FormShape extends BaseFormState>(
         setErrors: (errors: ErrorDictionary<FormShape>) => setFormErrors(form, errors),
     };
 }
+
+ferma.invalid = invalid;
