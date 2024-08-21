@@ -15,7 +15,7 @@ export function ferma<FormShape extends BaseFormState>(
     options: FermaOptions<FormShape> = {}
 ) {
     options.submit && submitController(form, options.submit);
-    options.validate && customValidations(form, options.validate);
+    customValidations(form, options.validate || {});
     return {
         getValue: () => getFormValue<FormShape>(form),
         setValue: (patch: Partial<FormShape>) => setFormValue(form, patch),
