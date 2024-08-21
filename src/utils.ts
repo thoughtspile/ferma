@@ -5,3 +5,8 @@ export function isPureRadio(controls: RadioNodeList) {
     });
     return isRadio;
 }
+
+export function getNamedControl(form: HTMLFormElement, name: string): HTMLInputElement | undefined {
+    const control = form.elements[name];
+    return control instanceof RadioNodeList ? control[0] : control;
+}

@@ -1,6 +1,7 @@
 import { getFieldValue } from './getFormValue';
 import { setFormErrors } from './setFormErrors';
 import { BaseFormState, FormControlEvent } from './types';
+import { getNamedControl } from './utils';
 
 export function invalid(message: string) {
     throw new Error(message);
@@ -14,15 +15,17 @@ export function customValidations<FormState extends BaseFormState>(
     form: HTMLFormElement, 
     validations: ValidationSchema<FormState>
 ): void {
-    function validateField(name: string, noClear?: boolean): void {
+    function validateField(name: string): void {
         const validation = validations[name];
-        if (!validation) return;
-        const value = getFieldValue(form.elements[name], new FormData(form).getAll(name));
+        const el = getNamedControl(form, name);
         try {
-            validation(value as any);
-            !noClear && setFormErrors(form, { [name]: '' }, { noReport: true });
+            if (validation) {
+                const value = getFieldValue(form.elements[name], new FormData(form).getAll(name));
+                validation(value as any);
+            }
+            el?.setCustomValidity('');
         } catch (err) {
-            setFormErrors(form, { [name]: err.message }, { noReport: true });
+            el?.setCustomValidity(err.message);
         }
     }
 
@@ -41,22 +44,22 @@ export function customValidations<FormState extends BaseFormState>(
         e.preventDefault();
     }
 
-    function handleInvalid() {
-        for (const name in validations) {
-            validateField(name, true);
-        }
-    }
-
     function handleChange(e: FormControlEvent) {
         validateField(e.target.name);
+    }
+
+    function revalidate() {
+        for (const name in validations) {
+            getNamedControl(form, name)?.validity.valid && validateField(name);
+        }
     }
 
     // validate after native validation passed
     form.addEventListener('submit', handleSubmit, { capture: true });
     // validate after native validation failed
-    form.addEventListener('invalid', handleInvalid, { capture: true });
+    form.addEventListener('invalid', revalidate, { capture: true });
     // live validation on change
-    form.addEventListener('change', handleChange);
+    form.addEventListener('input', handleChange);
     // validate on setFormValue
     form.addEventListener('ferma:change', handleChange, { capture: true });
 }

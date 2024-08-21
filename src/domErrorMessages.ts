@@ -34,17 +34,16 @@ function onValidityChange(e: FormControlEvent) {
     syncErrorMessage(e.target)
 }
 
-function onInput(e: FormControlEvent) {
-    e.target.validity.valid && syncErrorMessage(e.target);
+function hideErrorIfValid(e: FormControlEvent) {
+    const isValid = !e.target.validationMessage;
+    isValid && syncErrorMessage(e.target);
 }
 
 export function domErrorMessages(form: HTMLFormElement): void {
     // fallback validations on submit without interaction
     form.addEventListener('invalid', handleInvalid, { capture: true });
-    // listen to ferma custom validations
-    form.addEventListener('ferma:validity', onValidityChange, { capture: true });
-    // listen live native validations
+    // hide error live if shown
+    form.addEventListener('input', hideErrorIfValid);
+    // show error on blur
     form.addEventListener('blur', onValidityChange, { capture: true });
-    // clear native validations immediately when fixed
-    form.addEventListener('input', onInput, { capture: true });
 }

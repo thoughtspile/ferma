@@ -95,7 +95,7 @@ describe('interaction with native validation', () => {
         expect(getControl('bar')).toBeInvalid();
     });
 
-    it('custom validation overrides native', async () => {
+    it('custom validation does not override native', async () => {
         const { form, onSumbit } = createForm(`
             <input name="foo" required>
         `);
@@ -105,7 +105,7 @@ describe('interaction with native validation', () => {
         await submit();
         expect(onSumbit).not.toBeCalled();
         expect(getControl('foo')).toBeInvalid();
-        expect(getControl('foo').validationMessage).toBe('bad foo');
+        expect(getControl('foo').validationMessage).toBe('Constraints not satisfied');
     });
 });
 
