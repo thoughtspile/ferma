@@ -1,6 +1,6 @@
 {
   "name": "ferma",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "HTML forms with less pain",
   "bugs": {
     "url": "https://github.com/thoughtspile/ferma/issues"
